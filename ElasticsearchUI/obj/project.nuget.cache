@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "sIMZyZhCJNVKjX4+k26YHVG3FMdm7J7KoFAwKBA59BUhEIZb8wvbd7KdRXUQM7dbr8ho7vHBw4Itd/xcpjThFg==",
+  "dgSpecHash": "NOI+wa9Tgn7prqo4XJ/tLH1xP+jFCSFVQchdDd0Ma1me4UE3dGHXZAeYv+p9X45PR4MmKXKEXD3hAmr6JXTX+g==",
   "success": true,
   "projectFilePath": "/Users/melitas/CustomProjects/ElasticsearchWorkspace/ElasticsearchUI/ElasticsearchUI.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,7 @@
     "/Users/melitas/.nuget/packages/microsoft.extensions.apidescription.server/3.0.0/microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "/Users/melitas/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
     "/Users/melitas/.nuget/packages/nest/7.16.0/nest.7.16.0.nupkg.sha512",
+    "/Users/melitas/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512",
     "/Users/melitas/.nuget/packages/swashbuckle.aspnetcore/5.6.3/swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
     "/Users/melitas/.nuget/packages/swashbuckle.aspnetcore.swagger/5.6.3/swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
     "/Users/melitas/.nuget/packages/swashbuckle.aspnetcore.swaggergen/5.6.3/swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",

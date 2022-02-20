@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ElasticsearchUI.Configuration.Connection;
+using ElasticsearchUI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,10 +29,14 @@ namespace ElasticsearchUI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ElasticsearchUI", Version = "v1" });
             });
+
+            services.AddScoped<IElasticOperationService, ElasticOperationService>();
+            services.AddSingleton<ElasticProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

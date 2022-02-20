@@ -1,0 +1,111 @@
+1-) Configuration Options
+
+Clientlar'ın elasticsearch ile bağlnatılarını yönetebilmek için, Lowlevel client için kullanılacak obje ConnectionConfiguration dır.Highlevel client için kullanılacak obje ConnectionSettings
+classıdır.
+
+ConnectionConfiguration ve ConnectionSettings ile yapıalabilecek configurationlar link ile bulunabilir. https://www.elastic.co/guide/en/elasticsearch/client/net-api/current/configuration-options.html
+
+2-) Connection Pools
+
+Connection pool oluşturmak, clusterda hangi node'ların bulunduğunu ve hangi Nest client requestleri yapmak için kullanabileceğini kaydetmeyle ilgili mekanizmadır.
+Connectionpool elasticsearchj cluster üzerindeki  node'ların yönetilmesinden sorumludur. 1 ConnetionSettings nesnesine ilişkili bir adet connectionpool instance olmalıdır.
+Uygulama ayakta olduğu sürece tek bir instance üzerinden(Singleton) olarak yönetilmesi önerilir.
+
+Çeşitleri şunlardır;
+
+2-a) SingleNodeConnectionPool
+2-b) CloudConnectionPool
+2-c) StaticConnectionPool
+2-d) SniffingConnectionPool
+2-e) StickyConnectionPool
+
+
+2-a) SingleNodeConnectionPool:
+ Connectionpool'lar içerisindeki en basitidir.ConnectionSettings constructor'ına herhangibir pool type geçilmezse default olarak kullanılır.
+ Tek bir uri alır ve ve tüm requestler için bu elasticsearch uri'sini kullanarak bağlanır. Node'lara herhangibr ping atma işlemi yapmaz.
+ Sürekli bağlantıya hazırdır.Node'lar ayakta veya down diye işaretlemez.
+
+2-b)CloudConnectionPool:
+ Bir cloudId ve credantial datası ile çalışan SingleNodeConnectionPool sınıfının alt sınıfıdır.
+ 
+Burayı bu kadar yazdım çünkü diğer pool typlera ihtiyacım olacağını düşünmüyorum :)
+
+
+3-) DefaultFieldNameInferrer
+ ConnectionSettings nesnesi üzerinden configure edilebilir. Amacı elasticsearch'e kaydedilen objelerin propertylerinin adlarını bir kural ile yazmak.
+ Örnek olara UserName diye bir propertymiz var user_Name şekline getirerek kaydetmek için genel bir rule tanımlanır ve bütün propertyler bu şekilde kaydedilir.
+ 
+4-) PropertyName elasticsearche özel bir isimle kaydetmek istediğimiz propertylere attribute olarak eklenir.
+
+[PropertyName("string_property")]
+public string StringProperty { get; set; }
+
+
+5-) Auto Mapping
+ Elasticsearch üzerinde saklamak istediğimiz verilerin tiplerini otomatiok olarak algılar ve mapler.
+ Recurcive objeler için istisnalar vardır.
+ 
+ createIndexResponse = _client.Indices.Create("myindex", c => c
+     .Map<A>(m => m.AutoMap(3))
+ );
+ 
+ Yukarıdaki gibi bir tanımlama ile 3 kırılım recursive mapping yapar. 
+
+AutoMap Documentation Url:https://www.elastic.co/guide/en/elasticsearch/client/net-api/current/auto-map.html
+
+Özel olarak propertyleri ve classları maplemek için attribute ekleme metodu kullanılabilir: https://www.elastic.co/guide/en/elasticsearch/client/net-api/current/attribute-mapping.html
+
+6-)Term Queries
+
+Term queryleri ile yazılan filtreler ilk başta çalışmıyoru gibi gözükebilir. Bunun nedeni veriyi direk olarak analiz edilmiş halinde arar ve bulamazsa geriye sonuç dönmez.
+Bir text veya sayısal karakterin elasticsearch üzerinde nasıl analyze edildiğini görmemizi sağlayan request aşağıdadır.
+
+GET /customer/_analyze
+{
+  "field": "first_name",
+  "text": "Mertcan Elitaş"
+}
+
+Bu sorguyu kibana üzerinde execute ettğimizde bize "Mertcan Elitaş" text'inin nasıl analyze edildiğini verir.
+Bu ifadeyi "mertcan" ve "elitaş" olmak üzere ayrı ayrı analyze eder. Eğer biz queryi "Mertcan" diye gönderirsek
+bir result bulamadan geri boş sonuç döner.
+
+Aşağıdaki sorgu ile yeni bir index oluşturup firstname alanının analyze edilmemesi gerektiğini söylediğimiz zaman
+veri analyz edilmeden saklanır ve bizde direk olarak term querylerini kullanabiliriz.
+
+PUT /my_store 
+{
+    "mappings" : {
+        "products" : {
+            "properties" : {
+                "firstname" : {
+                    "type" : "string",
+                    "index" : "not_analyzed" 
+                }
+            }
+        }
+    }
+
+}
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
